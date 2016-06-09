@@ -27,6 +27,12 @@
     <docker.image>${docker.group.name}/${project.artifactId}:${project.version}</docker.image>
 
     <discovery.service-type>unknown</discovery.service-type>
+    <!-- Logging properties -->
+    <slf4j.version>1.7.21</slf4j.version>
+    <log4j2.version>2.5</log4j2.version>
+    <disruptor.version>3.3.4</disruptor.version>
+    <log_delegate>-Dvertx.logger-delegate-factory-class-name=io.vertx.core.logging.SLF4JLogDelegateFactory</log_delegate>
+    <log_context>-DLog4jContextSelector=org.apache.logging.log4j.core.async.AsyncLoggerContextSelector</log_context>
   </properties>
 
   <dependencyManagement>
@@ -125,6 +131,36 @@
       <scope>test</scope>
     </dependency>
 
+    <!-- Logging dependencies -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-slf4j-impl</artifactId>
+      <version>2.5</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <version>${log4j2.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>${log4j2.version}</version>
+    </dependency>
+    <!-- Asynchronous logging
+         See: https://logging.apache.org/log4j/2.x/manual/async.html
+    -->
+    <dependency>
+      <groupId>com.lmax</groupId>
+      <artifactId>disruptor</artifactId>
+      <version>${disruptor.version}</version>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -187,6 +223,8 @@
                   <entryPoint>
                     <exec>
                       <arg>java</arg>
+                      <arg>${log_delegate}</arg>
+                      <arg>${log_context}</arg>
                       <arg>-jar</arg>
                       <arg>${project.artifactId}-${project.version}-fat.jar</arg>
                       <arg>-cluster</arg>

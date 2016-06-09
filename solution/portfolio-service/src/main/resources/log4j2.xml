@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuration>
+	<Appenders>
+		<RollingFile name="vertx_file" append="true" fileName="/var/log/vertx.log" filePattern="/var/log/vertx/$${date:yyyy-MM}/vertx-%d{MM-dd-yyyy}-%i.log.gz">
+		   <PatternLayout pattern="%d{ISO8601} %-5p %c{1}:%L - %m%n" />
+		   <Policies>
+  				<OnStartupTriggeringPolicy />
+  				<SizeBasedTriggeringPolicy size="5MB" />
+  				<TimeBasedTriggeringPolicy />
+			</Policies>
+		</RollingFile>
+	    <Console name="STDOUT" target="SYSTEM_OUT">
+	      <PatternLayout pattern="%d{ISO8601} %-5p %c{1}:%L - %m%n" />
+	    </Console>
+	</Appenders>
+	<Loggers>
+		<Root level="DEBUG">
+			<AppenderRef ref="STDOUT"/>
+			<AppenderRef ref="vertx_file" />
+		</Root>
+	</Loggers>
+</Configuration>

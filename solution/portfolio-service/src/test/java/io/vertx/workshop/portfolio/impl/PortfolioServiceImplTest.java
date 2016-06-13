@@ -2,6 +2,8 @@ package io.vertx.workshop.portfolio.impl;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.unit.Async;
 import io.vertx.ext.unit.TestContext;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
@@ -19,6 +21,8 @@ import org.junit.runner.RunWith;
 @RunWith(VertxUnitRunner.class)
 public class PortfolioServiceImplTest {
 
+  private static final Logger logger = LoggerFactory.getLogger(PortfolioServiceImplTest.class);
+
   private Vertx vertx;
   private PortfolioService service;
   private Portfolio original;
@@ -32,7 +36,7 @@ public class PortfolioServiceImplTest {
       service = ProxyHelper.createProxy(PortfolioService.class, vertx, PortfolioService.ADDRESS);
       service.getPortfolio(ar -> {
         if (!ar.succeeded()) {
-          System.out.println(ar.cause());
+          logger.info(ar.cause());
         }
         tc.assertTrue(ar.succeeded());
         original = ar.result();

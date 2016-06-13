@@ -1,6 +1,8 @@
 package io.vertx.workshop.trader.impl;
 
 import io.vertx.core.json.JsonObject;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
 import io.vertx.workshop.portfolio.PortfolioService;
 
 import java.util.Map;
@@ -10,6 +12,8 @@ import java.util.Random;
  * A small utility class to initialize the compulsive traders and implement the stupid trading logic.
  */
 public class TraderUtils {
+
+  private static final Logger logger = LoggerFactory.getLogger(TraderUtils.class);
 
   private final static Random RANDOM = new Random();
 
@@ -38,17 +42,17 @@ public class TraderUtils {
       if (TraderUtils.timeToSell()) {
         portfolio.sell(numberOfShares, quote, p -> {
           if (p.succeeded()) {
-            System.out.println("Sold " + numberOfShares + " of " + company + "!");
+            logger.info("Sold " + numberOfShares + " of " + company + "!");
           } else {
-            System.out.println("D'oh, failed to sell " + numberOfShares + " of " + company + " : " + p.cause());
+            logger.info("D'oh, failed to sell " + numberOfShares + " of " + company + " : " + p.cause());
           }
         });
       } else {
         portfolio.buy(numberOfShares, quote, p -> {
           if (p.succeeded()) {
-            System.out.println("Bought " + numberOfShares + " of " + company + " !");
+            logger.info("Bought " + numberOfShares + " of " + company + " !");
           } else {
-            System.out.println("D'oh, failed to buy " + numberOfShares + " of " + company + " : " + p.cause());
+            logger.info("D'oh, failed to buy " + numberOfShares + " of " + company + " : " + p.cause());
           }
         });
       }

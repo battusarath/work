@@ -1,5 +1,7 @@
 package io.vertx.workshop.portfolio.impl;
 
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
 import io.vertx.serviceproxy.ProxyHelper;
 import io.vertx.workshop.common.MicroServiceVerticle;
 import io.vertx.workshop.portfolio.PortfolioService;
@@ -11,6 +13,8 @@ import static io.vertx.workshop.portfolio.PortfolioService.EVENT_ADDRESS;
  * A verticle publishing the portfolio service.
  */
 public class PortfolioVerticle extends MicroServiceVerticle {
+
+  private static final Logger logger = LoggerFactory.getLogger(PortfolioVerticle.class);
 
   @Override
   public void start() {
@@ -27,7 +31,7 @@ public class PortfolioVerticle extends MicroServiceVerticle {
       if (ar.failed()) {
         ar.cause().printStackTrace();
       } else {
-        System.out.println("Portfolio service published : " + ar.succeeded());
+        logger.info("Portfolio service published : " + ar.succeeded());
       }
     });
 
@@ -37,7 +41,7 @@ public class PortfolioVerticle extends MicroServiceVerticle {
       if (ar.failed()) {
         ar.cause().printStackTrace();
       } else {
-        System.out.println("Portfolio Events service published : " + ar.succeeded());
+        logger.info("Portfolio Events service published : " + ar.succeeded());
       }
     });
     //----

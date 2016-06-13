@@ -4,6 +4,8 @@ import io.vertx.core.CompositeFuture;
 import io.vertx.core.Future;
 import io.vertx.core.eventbus.MessageConsumer;
 import io.vertx.core.json.JsonObject;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
 import io.vertx.servicediscovery.types.EventBusService;
 import io.vertx.servicediscovery.types.MessageSource;
 import io.vertx.workshop.common.MicroServiceVerticle;
@@ -14,6 +16,8 @@ import io.vertx.workshop.portfolio.PortfolioService;
  */
 public class JavaCompulsiveTraderVerticle extends MicroServiceVerticle {
 
+  private static final Logger logger = LoggerFactory.getLogger(JavaCompulsiveTraderVerticle.class);
+
   @Override
   public void start(Future<Void> future) {
     super.start();
@@ -22,7 +26,7 @@ public class JavaCompulsiveTraderVerticle extends MicroServiceVerticle {
     // Initialize the trader
     String company = TraderUtils.pickACompany();
     int numberOfShares = TraderUtils.pickANumber();
-    System.out.println("Java compulsive trader configured for company " + company + " and shares: " + numberOfShares);
+    logger.info("Java compulsive trader configured for company " + company + " and shares: " + numberOfShares);
 
     // We need to retrieve two services, create two futures object that will get the services
     Future<MessageConsumer<JsonObject>> marketFuture = Future.future();

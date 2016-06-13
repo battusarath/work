@@ -4,6 +4,8 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +17,7 @@ import java.util.Map;
  */
 public class RestQuoteAPIVerticle extends AbstractVerticle {
 
+  private static final Logger logger = LoggerFactory.getLogger(RestQuoteAPIVerticle.class);
   private Map<String, JsonObject> quotes = new HashMap<>();
 
   @Override
@@ -63,9 +66,9 @@ public class RestQuoteAPIVerticle extends AbstractVerticle {
         })
         .listen(8080, ar -> {
           if (ar.succeeded()) {
-            System.out.println("Server started");
+            logger.info("Server started");
           } else {
-            System.out.println("Cannot start the server: " + ar.cause());
+            logger.info("Cannot start the server: " + ar.cause());
           }
         });
   }

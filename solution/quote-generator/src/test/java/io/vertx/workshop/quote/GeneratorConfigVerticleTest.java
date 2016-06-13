@@ -3,6 +3,8 @@ package io.vertx.workshop.quote;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
 import org.junit.Test;
 
 import java.io.File;
@@ -19,6 +21,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class GeneratorConfigVerticleTest {
 
+  private static final Logger logger = LoggerFactory.getLogger(GeneratorConfigVerticleTest.class);
+
   @Test
   public void test() throws IOException {
     byte[] bytes = Files.readAllBytes(new File("src/test/resources/config.json").toPath());
@@ -32,7 +36,7 @@ public class GeneratorConfigVerticleTest {
 
     vertx.eventBus().consumer(GeneratorConfigVerticle.ADDRESS, message -> {
       JsonObject quote = (JsonObject) message.body();
-      System.out.println(quote.encodePrettily());
+      logger.info(quote.encodePrettily());
       assertThat(quote.getDouble("bid")).isGreaterThan(0);
       assertThat(quote.getDouble("ask")).isGreaterThan(0);
       assertThat(quote.getInteger("volume")).isGreaterThan(0);

@@ -3,12 +3,16 @@ package io.vertx.workshop.quote;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
 import io.vertx.workshop.common.MicroServiceVerticle;
 
 /**
  * a verticle generating "fake" quotes based on the configuration.
  */
 public class GeneratorConfigVerticle extends MicroServiceVerticle {
+
+  private static final Logger logger = LoggerFactory.getLogger(GeneratorConfigVerticle.class);
 
   /**
    * The address on which the data are sent.
@@ -38,7 +42,7 @@ public class GeneratorConfigVerticle extends MicroServiceVerticle {
       if (!rec.succeeded()) {
         rec.cause().printStackTrace();
       }
-      System.out.println("Market-Data service published : " + rec.succeeded());
+      logger.info("Market-Data service published : " + rec.succeeded());
     });
   }
 }

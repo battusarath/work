@@ -29,6 +29,7 @@ public class RestQuoteAPIVerticle extends AbstractVerticle {
 
       // ----
       JsonObject quote = message.body();
+      logger.debug("Received new quote: " + quote.toString());
       quotes.put(quote.getString("name"), quote);
       // ----
     });
@@ -43,6 +44,8 @@ public class RestQuoteAPIVerticle extends AbstractVerticle {
 
     vertx.createHttpServer()
         .requestHandler(request -> {
+          logger.debug("Request received: " + request.method() + "\t" + request.path());
+
           HttpServerResponse response = request.response()
               .putHeader("content-type", "application/json");
 

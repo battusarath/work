@@ -9,6 +9,8 @@ import io.vertx.core.http.HttpServer;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.jdbc.JDBCClient;
 import io.vertx.ext.sql.ResultSet;
 import io.vertx.ext.sql.SQLConnection;
@@ -27,6 +29,8 @@ import java.util.stream.Collectors;
  * A verticle storing operations in a database (hsql) and providing access to the operations.
  */
 public class AuditVerticle extends MicroServiceVerticle {
+
+  private static final Logger logger = LoggerFactory.getLogger(AuditVerticle.class);
 
   private static final String DROP_STATEMENT = "DROP TABLE IF EXISTS AUDIT";
   private static final String CREATE_TABLE_STATEMENT = "CREATE TABLE IF NOT EXISTS AUDIT (id INTEGER IDENTITY, operation varchar(250))";
@@ -57,11 +61,13 @@ public class AuditVerticle extends MicroServiceVerticle {
     CompositeFuture.all(httpEndpointReady, databaseReady, messageListenerReady)
         .setHandler(ar -> {
           if (ar.succeeded()) {
+            logger.debug("AuditVerticle initialized.");
             // Register the handle called on messages
             messageListenerReady.result().handler(message -> storeInDatabase(message.body()));
             // Notify the completion
             future.complete();
           } else {
+            logger.error("AuditVerticle failed to initialize.",ar.cause());
             future.fail(ar.cause());
           }
         });
@@ -82,11 +88,12 @@ public class AuditVerticle extends MicroServiceVerticle {
     // 3. When done, iterate over the result to build a list
     // 4. close the connection
     // 5. return this list in the response
-
+    logger.debug("Retrieving operations.");
     // ----
     // 1 - we retrieve the connection
     jdbc.getConnection(ar -> {
       if (ar.failed()) {
+        logger.error("Failed to retrieve operations.", ar.cause());
         context.fail(ar.cause());
       } else {
         SQLConnection connection = ar.result();
@@ -146,6 +153,7 @@ public class AuditVerticle extends MicroServiceVerticle {
     Future<SQLConnection> connectionRetrieved = Future.future();
     Future<UpdateResult> insertionDone = Future.future();
 
+    logger.debug("Storing operations in db.");
     // Step 1 get the connection
     jdbc.getConnection(connectionRetrieved.completer());
 
@@ -153,7 +161,7 @@ public class AuditVerticle extends MicroServiceVerticle {
     connectionRetrieved.setHandler(
         ar -> {
           if (ar.failed()) {
-            System.err.println("Failed to insert operation in database: " + ar.cause());
+            logger.error("Failed to insert operation in database: " + ar.cause());
           } else {
             SQLConnection connection = ar.result();
             connection.updateWithParams(INSERT_STATEMENT,
@@ -186,6 +194,7 @@ public class AuditVerticle extends MicroServiceVerticle {
     // This future will be assigned when the connection with the database is established.
     // We are going to use this future as a reference on the connection to close it.
     Future<SQLConnection> connectionRetrieved = Future.future();
+
     // Retrieve a connection with the database, report on the databaseReady if failed, or assign the connectionRetrieved
     // future.
     jdbc.getConnection(connectionRetrieved.completer());

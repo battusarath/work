@@ -3,6 +3,8 @@ package io.vertx.workshop.portfolio.impl;
 import io.vertx.core.*;
 import io.vertx.core.http.HttpClient;
 import io.vertx.core.json.JsonObject;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
 import io.vertx.servicediscovery.ServiceDiscovery;
 import io.vertx.servicediscovery.types.HttpEndpoint;
 import io.vertx.workshop.portfolio.Portfolio;
@@ -18,6 +20,8 @@ import java.util.stream.Collectors;
  */
 public class PortfolioServiceImpl implements PortfolioService {
 
+  private static final Logger logger = LoggerFactory.getLogger(PortfolioServiceImpl.class);
+
   private final Vertx vertx;
   private final Portfolio portfolio;
   private final ServiceDiscovery discovery;
@@ -30,12 +34,14 @@ public class PortfolioServiceImpl implements PortfolioService {
 
   @Override
   public void getPortfolio(Handler<AsyncResult<Portfolio>> resultHandler) {
+    logger.debug("Portfolio requested.");
     // ----
     resultHandler.handle(Future.succeededFuture(portfolio));
     // ----
   }
 
   private void sendActionOnTheEventBus(String action, int amount, JsonObject quote, int newAmount) {
+    logger.debug("Publishing a new quote.");
     // ----
     vertx.eventBus().publish(EVENT_ADDRESS, new JsonObject()
         .put("action", action)
@@ -54,9 +60,11 @@ public class PortfolioServiceImpl implements PortfolioService {
     HttpEndpoint.getClient(discovery, new JsonObject().put("name", "CONSOLIDATION"),
         client -> {
           if (client.failed()) {
+            logger.error("Failed to find CONSOLIDATION client.");
             // It failed...
             resultHandler.handle(Future.failedFuture(client.cause()));
           } else {
+            logger.debug("Found CONSOLIDATION client.");
             // We have the client
             HttpClient httpClient = client.result();
             computeEvaluation(httpClient, resultHandler);
@@ -67,6 +75,7 @@ public class PortfolioServiceImpl implements PortfolioService {
   }
 
   private void computeEvaluation(HttpClient httpClient, Handler<AsyncResult<Double>> resultHandler) {
+    logger.debug("Evaluating total shares worth.");
     // We need to call the service for each company we own shares
     List<Future> results = portfolio.getShares().entrySet().stream()
         .map(entry -> getValueForCompany(httpClient, entry.getKey(), entry.getValue()))

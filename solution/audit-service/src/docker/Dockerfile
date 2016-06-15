@@ -30,11 +30,12 @@ ADD logstash-beats.crt /etc/pki/tls/certs/logstash-beats.crt
 
 ## Application
 COPY /maven/$fatJar ./app-fat.jar
-RUN chmod -R 755 app-fat.jar
 
 ## Config file
-ADD config.json .
-RUN chmod 755 config.json
+ADD config.json ./
+
+## Assign permissions to workdir
+RUN chmod -R 777 /opt
 
 ## Start script
 ADD start.sh /tmp/start.sh

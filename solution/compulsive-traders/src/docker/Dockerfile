@@ -1,6 +1,10 @@
 FROM java:8
 
 ARG fatJar
+ARG vertxOptsArg
+
+## Set environment variable with the argument passed during build time
+ENV VERTX_OPTS $vertxOptsArg
 
 ## Declare listening port
 EXPOSE 8080

@@ -219,6 +219,8 @@
                   <dockerFileDir>${project.basedir}/src/docker/</dockerFileDir>
                   <args>
                     <fatJar>${project.artifactId}-${project.version}-fat.jar</fatJar>
+                    <!-- Configure Vert.x opts ENV in external Dockerfile using arg -->
+                    <vertxOptsArg>${log_delegate} ${log_context}</vertxOptsArg>
                   </args>
                   <!-- Make file available while building image -->
                   <assembly>
@@ -234,8 +236,6 @@
                   </assembly>
                   <env>
                     <SERVICE_TYPE>${discovery.service-type}</SERVICE_TYPE>
-                    <!-- Vert.x options as System Properties -->
-                    <VERTX_OPTS>${log_delegate} ${log_context}</VERTX_OPTS>
                   </env>
                 </build>
                 <run>

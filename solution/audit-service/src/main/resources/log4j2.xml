@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Configuration>
 	<Appenders>
-		<RollingFile name="vertx_file" append="true" fileName="/var/log/vertx.log" filePattern="/var/log/vertx/$${date:yyyy-MM}/vertx-%d{MM-dd-yyyy}-%i.log.gz">
+		<RollingFile name="vertx_app_logs" append="true" fileName="/var/log/vertx_app.log" filePattern="/var/log/vertx/$${date:yyyy-MM}/vertx_app-%d{MM-dd-yyyy}-%i.log.gz">
+			<PatternLayout pattern="%d{ISO8601} %-5p %c:%L - %m%n" />
+			<Policies>
+				<OnStartupTriggeringPolicy />
+				<SizeBasedTriggeringPolicy size="5MB" />
+				<TimeBasedTriggeringPolicy />
+			</Policies>
+		</RollingFile>
+		<RollingFile name="vertx_sys_logs" append="true" fileName="/var/log/vertx_sys.log" filePattern="/var/log/vertx/$${date:yyyy-MM}/vertx_sys-%d{MM-dd-yyyy}-%i.log.gz">
 		   <PatternLayout pattern="%d{ISO8601} %-5p %c:%L - %m%n" />
 		   <Policies>
   				<OnStartupTriggeringPolicy />
@@ -14,9 +22,13 @@
 	    </Console>
 	</Appenders>
 	<Loggers>
+		<Logger name="io.vertx.workshop" level="DEBUG" additivity="false">
+			<AppenderRef ref="STDOUT"/>
+			<AppenderRef ref="vertx_app_logs" />
+		</Logger>
 		<Root level="DEBUG">
 			<AppenderRef ref="STDOUT"/>
-			<AppenderRef ref="vertx_file" />
+			<AppenderRef ref="vertx_sys_logs" />
 		</Root>
 	</Loggers>
 </Configuration>

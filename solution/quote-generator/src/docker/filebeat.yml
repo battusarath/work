@@ -1,9 +1,17 @@
 filebeat: 
   prospectors: 
     - 
-      document_type: vertx
+      document_type: quote_generator_app
       paths: 
-        - /var/log/vertx.log
+        - /var/log/vertx_app.log
+      multiline:
+        pattern: "^[0-9]+"
+        negate: true
+        match: after
+    -
+      document_type: quote_generator_sys
+      paths:
+        - /var/log/vertx_sys.log
       multiline:
         pattern: "^[0-9]+"
         negate: true

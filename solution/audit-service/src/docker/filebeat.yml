@@ -23,6 +23,6 @@ output:
       - elk:5044
     timeout: 15
     tls:
-      insecure: true
-      certificate_authoritites:
+      insecure: false
+      certificate_authorities:
         - /etc/pki/tls/certs/logstash-beats.crt

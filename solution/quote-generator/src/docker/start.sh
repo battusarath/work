@@ -4,7 +4,7 @@
 echo "Stalling for ELK stack"
 
 # Not optimal way to stall
-sleep 30
+sleep 40
 
 echo "Starting app"
 

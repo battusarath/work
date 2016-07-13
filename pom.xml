@@ -300,10 +300,10 @@
 
   <modules>
     <module>vertx-workshop-common</module>
-    <module>quote-generator</module>
-    <module>portfolio-service</module>
-    <module>audit-service</module>
-    <module>compulsive-traders</module>
+    <module>solution/quote-generator</module>
+    <module>solution/portfolio-service</module>
+    <module>solution/audit-service</module>
+    <module>solution/compulsive-traders</module>
     <module>trader-dashboard</module>
   </modules>
 

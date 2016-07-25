@@ -28,13 +28,12 @@
       <multicast enabled="false"/>
 
       <tcp-ip enabled="true">
-        <interface>127.0.0.1</interface>
       </tcp-ip>
 
     </join>
 
-    <interfaces enabled="false">
-      <interface>10.10.1.*</interface>
+    <interfaces enabled="true">
+      <interface>10.100.198.101-105</interface>
     </interfaces>
     <ssl enabled="false"/>
     <socket-interceptor enabled="false"/>

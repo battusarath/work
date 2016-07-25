@@ -28,6 +28,7 @@
       <multicast enabled="false"/>
 
       <tcp-ip enabled="true">
+        <interface>10.100.198.101-105</interface>
       </tcp-ip>
 
     </join>

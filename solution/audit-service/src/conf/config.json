@@ -1,6 +1,5 @@
 {
   "url": "jdbc:hsqldb:file:/var/lib/vertx_app/audit-db;shutdown=true",
   "driver_class" : "org.hsqldb.jdbcDriver",
-  "http.port": 8080,
-  "hostIP": "10.100.198.101"
+  "http.port": 8080
 }

@@ -22,6 +22,7 @@ public class GeneratorConfigVerticle extends MicroServiceVerticle {
   public void start() {
     super.start();
 
+    String hostIP = System.getProperty("vertx.hostip", "localhost");
     // Read the configuration, and deploy a MarketDataVerticle for each company listed in the configuration.
     JsonArray quotes = config().getJsonArray("companies");
     for (Object q : quotes) {
@@ -41,7 +42,7 @@ public class GeneratorConfigVerticle extends MicroServiceVerticle {
       System.out.println("Market-Data service published : " + rec.succeeded());
     });
 
-    publishHttpEndpoint("quotes", "localhost", config().getInteger("http.port", 8080), ar -> {
+    publishHttpEndpoint("quotes", hostIP, config().getInteger("http.port", 8080), ar -> {
       if (ar.failed()) {
         ar.cause().printStackTrace();
       } else {

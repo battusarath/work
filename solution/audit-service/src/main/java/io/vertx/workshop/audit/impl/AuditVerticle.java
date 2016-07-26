@@ -47,6 +47,8 @@ public class AuditVerticle extends MicroServiceVerticle {
   public void start(Future<Void> future) {
     super.start();
 
+    String hostIP = System.getProperty("vertx.hostip", "localhost");
+
     // creates the jdbc client.
     jdbc = JDBCClient.createNonShared(vertx, config());
 
@@ -56,7 +58,7 @@ public class AuditVerticle extends MicroServiceVerticle {
     Future<Void> httpEndpointReady = configureTheHTTPServer().compose(
         server -> {
           Future<Void> regFuture = Future.future();
-          publishHttpEndpoint("audit", config().getString("hostIP"), server.actualPort(), regFuture.completer());
+          publishHttpEndpoint("audit", hostIP, server.actualPort(), regFuture.completer());
           return regFuture;
         }
     );

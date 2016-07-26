@@ -56,7 +56,7 @@ public class AuditVerticle extends MicroServiceVerticle {
     Future<Void> httpEndpointReady = configureTheHTTPServer().compose(
         server -> {
           Future<Void> regFuture = Future.future();
-          publishHttpEndpoint("audit", "localhost", server.actualPort(), regFuture.completer());
+          publishHttpEndpoint("audit", config().getString("hostIP"), server.actualPort(), regFuture.completer());
           return regFuture;
         }
     );

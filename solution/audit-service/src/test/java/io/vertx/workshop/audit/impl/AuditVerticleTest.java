@@ -29,8 +29,7 @@ public class AuditVerticleTest {
       .put("driverclass", "org.hsqldb.jdbcDriver")
       .put("drop", true)
       .put("backend-name", DefaultServiceDiscoveryBackend.class.getName())
-      .put("http.port", 8081)
-      .put("hostIP", "localhost");
+      .put("http.port", 8081);
   private Vertx vertx;
 
   @Before

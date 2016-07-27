@@ -30,11 +30,6 @@ public class Launcher extends io.vertx.core.Launcher {
   }
 
   @Override
-  public void beforeStartingVertx(VertxOptions options) {
-    options.setClusterHost("127.0.0.1");
-  }
-
-  @Override
   public void beforeDeployingVerticle(DeploymentOptions deploymentOptions) {
     super.beforeDeployingVerticle(deploymentOptions);
 

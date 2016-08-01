@@ -1,10 +1,15 @@
 #!/usr/bin/env bash
 
-# Wait for the ELK container to be ready before starting app.
-echo "Stalling for ELK stack"
+# Wait for the Portfolio to be ready before starting app. Poll Hazelcast default socket
+echo "Stalling setup for Portfolio service"
 
-# Not optimal way to stall
-sleep 40
+while true; do
+    [ "$(curl portfolio:5701 &> /dev/null; echo $?)" != 7 ] && break
+    sleep 3s
+done
+
+echo "Stall again for a bit"
+sleep 15
 
 echo "Starting app"
 

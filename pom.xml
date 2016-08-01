@@ -216,6 +216,7 @@
                   </tags>
                   <dockerFileDir>${project.basedir}/src/docker/</dockerFileDir>
                   <args>
+                    <serviceType>${discovery.service-type}</serviceType>
                     <fatJar>${project.artifactId}-${project.version}-fat.jar</fatJar>
                     <!-- Configure Vert.x opts ENV in external Dockerfile using arg -->
                     <vertxOptsArg>${log_delegate} ${log_context}</vertxOptsArg>
@@ -232,9 +233,6 @@
                       </files>
                     </inline>
                   </assembly>
-                  <env>
-                    <SERVICE_TYPE>${discovery.service-type}</SERVICE_TYPE>
-                  </env>
                 </build>
                 <run>
                   <ports>

@@ -1,9 +1,11 @@
 FROM java:8
 
+ARG serviceType
 ARG fatJar
 ARG vertxOptsArg
 
 ## Set environment variable with the argument passed during build time
+ENV SERVICE_TYPE $serviceType
 ENV VERTX_OPTS $vertxOptsArg
 
 ## Declare listening port

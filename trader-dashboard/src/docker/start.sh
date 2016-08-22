@@ -5,7 +5,7 @@ echo "Stalling for Audit service"
 
 while true; do
     [ "$(curl audit:8080 &> /dev/null; echo $?)" != 7 ] && break
-    sleep 1s
+    sleep 5s
 done
 
 echo "Stall again for a bit"

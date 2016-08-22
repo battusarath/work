@@ -17,6 +17,12 @@
 				<TimeBasedTriggeringPolicy />
 			</Policies>
 		</RollingFile>
+		<Async name="vertx_app_async">
+			<AppenderRef ref="vertx_app_logs"/>
+		</Async>
+		<Async name="vertx_sys_async">
+			<AppenderRef ref="vertx_sys_logs"/>
+		</Async>
 		<Console name="STDOUT" target="SYSTEM_OUT">
 			<PatternLayout pattern="%d{ISO8601} %-5p %c:%L - %m%n" />
 		</Console>
@@ -24,11 +30,11 @@
 	<Loggers>
 		<Logger name="io.vertx.workshop" level="DEBUG" additivity="false">
 			<AppenderRef ref="STDOUT"/>
-			<AppenderRef ref="vertx_app_logs" />
+			<AppenderRef ref="vertx_app_async" />
 		</Logger>
 		<Root level="DEBUG">
 			<AppenderRef ref="STDOUT"/>
-			<AppenderRef ref="vertx_sys_logs" />
+			<AppenderRef ref="vertx_sys_async" />
 		</Root>
 	</Loggers>
 </Configuration>
